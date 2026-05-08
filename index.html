@@ -67,11 +67,11 @@
 <div class="container">
     <div class="logo">
         <h1>AWSA Music</h1>
-        <p>Baixe músicas com capa oficial</p>
+        <p>MP3 com Qualidade de Áudio</p>
     </div>
 
-    <input type="text" id="youtubeUrl" placeholder="Cole o link (YouTube, Instagram, etc)">
-    <button id="btnMain" onclick="baixarMusica()">Processar Link</button>
+    <input type="text" id="userInput" placeholder="Cole o link aqui...">
+    <button id="btnMain" onclick="baixarMusica()">Converter para MP3</button>
 
     <div class="loader" id="loader"></div>
     <div id="status-text"></div>
@@ -83,7 +83,7 @@
             <div class="info">
                 <div id="title" style="font-size: 18px; font-weight: 600; margin-bottom: 5px;"></div>
                 <div id="artist" style="color: #999; margin-bottom: 10px;"></div>
-                <a id="downloadBtn" class="download-btn" href="#">Salvar MP3</a>
+                <a id="downloadBtn" class="download-btn" href="#">Baixar MP3 Oficial</a>
             </div>
         </div>
     </div>
@@ -96,7 +96,7 @@ const PROXY = "https://corsproxy.io/?";
 
 async function buscarCapaDeezer(titulo) {
     try {
-        const cleanTitle = titulo.replace(/\(Official.*?\)|\[Official.*?\]|Video|Audio|Clip/gi, '').trim();
+        const cleanTitle = titulo.replace(/\(Official.*?\)|\[Official.*?\]|Video|Audio|HD|4K/gi, '').trim();
         const searchUrl = `${PROXY}${encodeURIComponent(`https://api.deezer.com/search?q=${cleanTitle}`)}`;
         const res = await fetch(searchUrl);
         const data = await res.json();
@@ -112,7 +112,7 @@ async function buscarCapaDeezer(titulo) {
 }
 
 async function baixarMusica() {
-    const userUrl = document.getElementById("youtubeUrl").value;
+    const userUrl = document.getElementById("userInput").value;
     const btn = document.getElementById("btnMain");
     const loader = document.getElementById("loader");
     const result = document.getElementById("result");
@@ -120,7 +120,7 @@ async function baixarMusica() {
     const status = document.getElementById("status-text");
 
     if (!userUrl) {
-        errorDiv.innerText = "Por favor, cole um link válido.";
+        errorDiv.innerText = "Por favor, cole um link.";
         return;
     }
 
@@ -129,9 +129,9 @@ async function baixarMusica() {
         errorDiv.innerText = "";
         result.style.display = "none";
         loader.style.display = "block";
-        status.innerText = "Consultando API All-in-One...";
+        status.innerText = "1/4 - Processando áudio...";
 
-        // 1. Chamada para a nova API via Fetch
+        // 1. Chamada para a API All-in-One
         const options = {
             method: 'GET',
             headers: {
@@ -143,30 +143,24 @@ async function baixarMusica() {
         const apiRes = await fetch(`https://${RAPID_API_HOST}/?url=${encodeURIComponent(userUrl)}`, options);
         const apiData = await apiRes.json();
 
-        // Extração flexível (APIs All-in-One variam o formato de resposta)
-        // Geralmente retornam um objeto com 'title' e uma lista de 'links' ou 'url'
-        const videoTitle = apiData.title || "Música AWSA";
+        // Mapeamento dos campos conforme informado
+        if (apiData.status === "error") throw new Error("Erro na API.");
         
-        // Busca um link que seja MP3 ou Audio
-        let mp3Url = null;
-        if (apiData.links && Array.isArray(apiData.links)) {
-            const audioOption = apiData.links.find(l => l.format === 'mp3' || l.type === 'audio') || apiData.links[0];
-            mp3Url = audioOption.link || audioOption.url;
-        } else {
-            mp3Url = apiData.url || apiData.download;
-        }
+        const mp3Url = apiData.url;
+        const videoTitle = apiData.title || "Música AWSA";
+        const channelName = apiData.author || "Desconhecido";
 
-        if (!mp3Url) throw new Error("Link de download não encontrado.");
+        if (!mp3Url) throw new Error("URL de áudio não disponível.");
 
         // 2. Metadados do Deezer
-        status.innerText = "Buscando capa oficial...";
+        status.innerText = "2/4 - Buscando capa oficial...";
         const meta = await buscarCapaDeezer(videoTitle);
-        const finalArtist = meta?.artist || "Desconhecido";
+        const finalArtist = meta?.artist || channelName;
         const finalTitle = meta?.title || videoTitle;
-        const finalCover = meta?.cover || "https://picsum.photos/600/600";
+        const finalCover = meta?.cover || apiData.thumbnail || "https://picsum.photos/600/600";
 
-        // 3. Processamento ID3 (Download binário)
-        status.innerText = "Processando áudio e arte...";
+        // 3. Processamento de Buffers
+        status.innerText = "3/4 - Baixando arquivos...";
         const [audioRes, coverRes] = await Promise.all([
             fetch(PROXY + encodeURIComponent(mp3Url)),
             fetch(PROXY + encodeURIComponent(finalCover))
@@ -175,6 +169,8 @@ async function baixarMusica() {
         const audioBuffer = await audioRes.arrayBuffer();
         const coverBuffer = await coverRes.arrayBuffer();
 
+        // 4. Injeção de Tags ID3
+        status.innerText = "4/4 - Finalizando tags...";
         const writer = new ID3Writer(audioBuffer);
         writer.setFrame('TIT2', finalTitle)
               .setFrame('TPE1', [finalArtist])
@@ -187,14 +183,14 @@ async function baixarMusica() {
 
         const downloadUrl = URL.createObjectURL(writer.getBlob());
 
-        // Atualizar Interface
+        // Atualizar UI
         document.getElementById("cover").src = finalCover;
         document.getElementById("title").innerText = finalTitle;
         document.getElementById("artist").innerText = finalArtist;
         
         const dlBtn = document.getElementById("downloadBtn");
         dlBtn.href = downloadUrl;
-        dlBtn.download = `${finalTitle} - AWSA.mp3`;
+        dlBtn.download = `${finalTitle}.mp3`;
 
         loader.style.display = "none";
         status.innerText = "";
@@ -202,7 +198,7 @@ async function baixarMusica() {
 
     } catch (err) {
         console.error(err);
-        errorDiv.innerText = "Erro ao processar. Verifique o link ou a chave da API.";
+        errorDiv.innerText = "Ocorreu um erro. Verifique se o link é público.";
         loader.style.display = "none";
         status.innerText = "";
     } finally {
