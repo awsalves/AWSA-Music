@@ -17,7 +17,7 @@ app.use(express.json());
 // ======================================
 
 const APIFY_TOKEN =
-"apify_api_vTysQMyAiheE4X5sKTTDCsCu9ieCJH2vpnrU";
+"apify_api_3BRiI913KghOCzFlSQRoLruhcdh0Y24mxHR9";
 
 const LASTFM_API_KEY =
 "934535854489c4330843ffa6fc3878bf";
