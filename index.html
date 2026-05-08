@@ -22,27 +22,30 @@
 :root{
     --bg:#090909;
     --card:#121212;
-    --border:rgba(255,255,255,.06);
-    --text:#ffffff;
-    --muted:#8b8b8b;
     --primary:#ff004c;
     --secondary:#ff6600;
-    --success:#00c853;
+    --text:#ffffff;
+    --muted:#8b8b8b;
+    --border:rgba(255,255,255,.06);
 }
 
 body{
     font-family:'Poppins',sans-serif;
     min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
     background:
         radial-gradient(circle at top left,var(--primary) 0%,transparent 30%),
         radial-gradient(circle at bottom right,var(--secondary) 0%,transparent 30%),
         var(--bg);
-    color:var(--text);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
     padding:20px;
+
+    overflow:hidden;
+
+    color:var(--text);
 }
 
 .blur{
@@ -51,7 +54,7 @@ body{
     height:450px;
     border-radius:50%;
     filter:blur(120px);
-    opacity:.20;
+    opacity:.18;
     z-index:-1;
 }
 
@@ -70,10 +73,15 @@ body{
 .container{
     width:100%;
     max-width:560px;
+
     background:rgba(18,18,18,.92);
+
     border:1px solid var(--border);
+
     border-radius:32px;
+
     padding:35px;
+
     backdrop-filter:blur(24px);
 
     box-shadow:
@@ -89,6 +97,7 @@ body{
 .logo h1{
     font-size:3rem;
     font-weight:800;
+
     letter-spacing:-1px;
 
     background:linear-gradient(
@@ -102,44 +111,52 @@ body{
 }
 
 .logo p{
-    color:var(--muted);
     margin-top:8px;
+    color:var(--muted);
     font-size:.95rem;
-}
-
-.input-area{
-    position:relative;
 }
 
 input{
     width:100%;
+
     padding:18px 20px;
+
     border:none;
+
     border-radius:18px;
+
     background:#171717;
+
     color:white;
-    font-size:15px;
+
     outline:none;
+
+    font-size:15px;
 
     border:1px solid var(--border);
 
-    transition:.3s;
+    transition:.25s;
 }
 
 input:focus{
+
     border-color:var(--primary);
 
     background:#1d1d1d;
 
     box-shadow:
-        0 0 25px rgba(255,0,76,.2);
+        0 0 20px rgba(255,0,76,.25);
 }
 
 button{
     width:100%;
-    border:none;
-    padding:17px;
+
     margin-top:18px;
+
+    border:none;
+
+    padding:17px;
+
     border-radius:18px;
 
     background:linear-gradient(
@@ -149,8 +166,11 @@ button{
     );
 
     color:white;
+
     font-weight:700;
+
     font-size:15px;
+
     cursor:pointer;
 
     transition:.25s;
@@ -164,7 +184,6 @@ button:hover{
 button:disabled{
     opacity:.6;
     cursor:not-allowed;
-    transform:none;
 }
 
 .loader{
@@ -172,6 +191,7 @@ button:disabled{
     height:45px;
 
     border:4px solid rgba(255,255,255,.08);
+
     border-top:4px solid var(--primary);
 
     border-radius:50%;
@@ -193,13 +213,12 @@ button:disabled{
     text-align:center;
     color:#aaa;
     font-size:13px;
-    margin-top:10px;
 }
 
 .error{
-    margin-top:15px;
     text-align:center;
     color:#ff5252;
+    margin-top:15px;
     font-size:13px;
 }
 
@@ -224,8 +243,11 @@ button:disabled{
 
 .card{
     background:var(--card);
+
     border-radius:24px;
+
     overflow:hidden;
+
     border:1px solid var(--border);
 }
 
@@ -248,8 +270,7 @@ button:disabled{
 
 .artist{
     color:#aaa;
-    font-size:15px;
-    margin-bottom:6px;
+    margin-bottom:5px;
 }
 
 .album{
@@ -259,10 +280,11 @@ button:disabled{
 }
 
 .download-btn{
-    width:100%;
     display:flex;
     justify-content:center;
     align-items:center;
+
+    width:100%;
 
     padding:15px;
 
@@ -277,6 +299,7 @@ button:disabled{
     text-decoration:none;
 
     color:white;
+
     font-weight:700;
 
     transition:.25s;
@@ -287,8 +310,8 @@ button:disabled{
 }
 
 .footer{
-    margin-top:25px;
     text-align:center;
+    margin-top:25px;
     color:#666;
     font-size:11px;
 }
@@ -313,17 +336,15 @@ button:disabled{
 
     </div>
 
-    <div class="input-area">
+    <input
+        type="text"
+        id="videoUrl"
+        placeholder="Cole o link do YouTube..."
+    >
 
-        <input
-            type="text"
-            id="videoUrl"
-            placeholder="Cole o link do YouTube..."
-        >
-
-    </div>
-
-    <button id="convertBtn">
+    <button
+        id="convertBtn"
+    >
         Converter Agora
     </button>
 
@@ -395,36 +416,40 @@ button:disabled{
 // CONFIG
 // ======================================
 
-const APIFY_TOKEN =
-"apify_api_vTysQMyAiheE4X5sKTTDCsCu9ieCJH2vpnrU";
-
-const APIFY_ACTOR =
-"https://api.apify.com/v2/acts/vvSeSCimywoM62CdX/runs";
-
-const LASTFM_API_KEY =
-"934535854489c4330843ffa6fc3878bf";
+const API_URL =
+"http://localhost:3000/convert";
 
 // ======================================
 // ELEMENTOS
 // ======================================
 
 const btn =
-document.getElementById("convertBtn");
+document.getElementById(
+    "convertBtn"
+);
 
 const loader =
-document.getElementById("loader");
+document.getElementById(
+    "loader"
+);
 
 const statusText =
-document.getElementById("status");
+document.getElementById(
+    "status"
+);
 
 const errorText =
-document.getElementById("error");
+document.getElementById(
+    "error"
+);
 
 const result =
-document.getElementById("result");
+document.getElementById(
+    "result"
+);
 
 // ======================================
-// EVENT
+// EVENTO
 // ======================================
 
 btn.addEventListener(
@@ -433,103 +458,26 @@ btn.addEventListener(
 );
 
 // ======================================
-// YOUTUBE ID
+// ENTER
 // ======================================
 
-function getYoutubeId(url){
+document
+.getElementById(
+    "videoUrl"
+)
+.addEventListener(
+    "keypress",
+    e => {
 
-    const regExp =
-    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        if(e.key === "Enter"){
 
-    const match =
-    url.match(regExp);
-
-    return (
-        match &&
-        match[2].length === 11
-    )
-    ? match[2]
-    : null;
-}
-
-// ======================================
-// LAST.FM
-// ======================================
-
-async function buscarLastFM(
-    artista,
-    musica
-){
-
-    try{
-
-        const url =
-        `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${LASTFM_API_KEY}&artist=${encodeURIComponent(artista)}&track=${encodeURIComponent(musica)}&format=json`;
-
-        const res =
-        await fetch(url);
-
-        const data =
-        await res.json();
-
-        console.log(data);
-
-        if(
-            data.track &&
-            data.track.album
-        ){
-
-            const images =
-            data.track.album.image;
-
-            return{
-
-                title:
-                data.track.name ||
-
-                musica,
-
-                artist:
-                data.track.artist?.name ||
-
-                artista,
-
-                album:
-                data.track.album.title ||
-
-                "Álbum desconhecido",
-
-                cover:
-                images?.length
-                ? images[
-                    images.length - 1
-                  ]["#text"]
-                : ""
-            };
+            baixarMusica();
         }
-
-    }catch(err){
-
-        console.log(err);
     }
-
-    return null;
-}
+);
 
 // ======================================
-// AGUARDAR
-// ======================================
-
-function wait(ms){
-
-    return new Promise(
-        resolve =>
-        setTimeout(resolve,ms)
-    );
-}
-
-// ======================================
-// PRINCIPAL
+// CONVERTER
 // ======================================
 
 async function baixarMusica(){
@@ -542,7 +490,8 @@ async function baixarMusica(){
         .value
         .trim();
 
-    errorText.innerText = "";
+    errorText.innerText =
+    "";
 
     result.style.display =
     "none";
@@ -555,34 +504,24 @@ async function baixarMusica(){
         return;
     }
 
-    const videoId =
-    getYoutubeId(input);
-
-    if(!videoId){
-
-        errorText.innerText =
-        "URL do YouTube inválida.";
-
-        return;
-    }
-
     try{
 
-        btn.disabled = true;
+        btn.disabled =
+        true;
 
         loader.style.display =
         "block";
 
         statusText.innerText =
-        "Enviando vídeo...";
+        "Convertendo vídeo...";
 
         // ======================================
-        // APIFY
+        // API
         // ======================================
 
-        const runRes =
+        const response =
         await fetch(
-            `${APIFY_ACTOR}?token=${APIFY_TOKEN}`,
+            API_URL,
             {
                 method:"POST",
 
@@ -592,203 +531,40 @@ async function baixarMusica(){
                 },
 
                 body:JSON.stringify({
-
-                    videoUrls:[input],
-
-                    audioQuality:"192",
-
-                    proxyMode:"residential",
-
-                    maxDurationSeconds:3600
+                    url:input
                 })
             }
         );
 
-        const runData =
-        await runRes.json();
+        const data =
+        await response.json();
 
-        console.log(runData);
+        console.log(data);
 
-        if(!runData.data){
-
-            throw new Error(
-                "Falha conversão"
-            );
-        }
-
-        const runId =
-        runData.data.id;
-
-        statusText.innerText =
-        "Convertendo para MP3...";
-
-        // ======================================
-        // ESPERAR
-        // ======================================
-
-        let datasetId = null;
-
-        for(
-            let i = 0;
-            i < 40;
-            i++
+        if(
+            !data.success
         ){
 
-            await wait(3000);
-
-            const statusRes =
-            await fetch(
-                `https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`
-            );
-
-            const statusData =
-            await statusRes.json();
-
-            const actorStatus =
-            statusData.data.status;
-
-            console.log(actorStatus);
-
-            if(
-                actorStatus ===
-                "SUCCEEDED"
-            ){
-
-                datasetId =
-                statusData.data.defaultDatasetId;
-
-                break;
-            }
-
-            if(
-                actorStatus ===
-                "FAILED" ||
-
-                actorStatus ===
-                "ABORTED"
-            ){
-
-                throw new Error(
-                    "Falha Actor"
-                );
-            }
-        }
-
-        if(!datasetId){
-
             throw new Error(
-                "Tempo excedido"
+                data.error
             );
         }
 
-        // ======================================
-        // RESULTADO
-        // ======================================
-
         statusText.innerText =
-        "Obtendo MP3...";
-
-        const dataRes =
-        await fetch(
-            `https://api.apify.com/v2/datasets/${datasetId}/items?token=${APIFY_TOKEN}`
-        );
-
-        const items =
-        await dataRes.json();
-
-        console.log(items);
-
-        if(!items.length){
-
-            throw new Error(
-                "Sem resultado"
-            );
-        }
-
-        const music =
-        items[0];
-
-        const mp3Url =
-        music.audioUrl;
-
-        const title =
-        music.title ||
-        "AWSA Music";
-
-        const thumbnail =
-        music.thumbnailUrl;
+        "Baixando MP3...";
 
         // ======================================
-        // EXTRAIR
+        // AUDIO + COVER
         // ======================================
-
-        let artista = "";
-        let musica = title;
-
-        if(title.includes("-")){
-
-            const split =
-            title.split("-");
-
-            artista =
-            split[0].trim();
-
-            musica =
-            split
-                .slice(1)
-                .join("-")
-                .trim();
-        }
-
-        // ======================================
-        // LASTFM
-        // ======================================
-
-        statusText.innerText =
-        "Buscando capa do álbum...";
-
-        const meta =
-        await buscarLastFM(
-            artista,
-            musica
-        );
-
-        // ======================================
-        // FINAL
-        // ======================================
-
-        const finalTitle =
-        meta?.title ||
-        title;
-
-        const finalArtist =
-        meta?.artist ||
-        artista ||
-        "Artista";
-
-        const finalAlbum =
-        meta?.album ||
-        "Álbum desconhecido";
-
-        const finalCover =
-        meta?.cover ||
-        thumbnail;
-
-        // ======================================
-        // DOWNLOAD
-        // ======================================
-
-        statusText.innerText =
-        "Aplicando metadados...";
 
         const [
             audioRes,
             coverRes
         ] = await Promise.all([
 
-            fetch(mp3Url),
+            fetch(data.mp3),
 
-            fetch(finalCover)
+            fetch(data.cover)
         ]);
 
         const audioBuffer =
@@ -798,34 +574,42 @@ async function baixarMusica(){
         await coverRes.arrayBuffer();
 
         // ======================================
-        // ID3
+        // ID3 TAG
         // ======================================
 
+        statusText.innerText =
+        "Aplicando metadados...";
+
         const writer =
-        new ID3Writer(audioBuffer);
+        new ID3Writer(
+            audioBuffer
+        );
 
         writer
 
             .setFrame(
                 "TIT2",
-                finalTitle
+                data.title
             )
 
             .setFrame(
                 "TPE1",
-                [finalArtist]
+                [data.artist]
             )
 
             .setFrame(
                 "TALB",
-                finalAlbum
+                data.album
             )
 
             .setFrame(
                 "COMM",
                 {
-                    description:"AWSA Music",
-                    text:"Convertido por AWSA Music"
+                    description:
+                    "AWSA Music",
+
+                    text:
+                    "Convertido por AWSA Music"
                 }
             )
 
@@ -834,7 +618,8 @@ async function baixarMusica(){
                 {
                     type:3,
                     data:coverBuffer,
-                    description:"Cover"
+                    description:
+                    "Cover"
                 }
             );
 
@@ -855,22 +640,22 @@ async function baixarMusica(){
         document.getElementById(
             "cover"
         ).src =
-        finalCover;
+        data.cover;
 
         document.getElementById(
             "title"
         ).innerText =
-        finalTitle;
+        data.title;
 
         document.getElementById(
             "artist"
         ).innerText =
-        finalArtist;
+        data.artist;
 
         document.getElementById(
             "album"
         ).innerText =
-        finalAlbum;
+        data.album;
 
         const dlBtn =
         document.getElementById(
@@ -881,7 +666,7 @@ async function baixarMusica(){
         downloadUrl;
 
         dlBtn.download =
-        `${finalTitle} - ${finalArtist}.mp3`;
+        `${data.title} - ${data.artist}.mp3`;
 
         loader.style.display =
         "none";
@@ -894,7 +679,7 @@ async function baixarMusica(){
 
     }catch(err){
 
-        console.error(err);
+        console.log(err);
 
         loader.style.display =
         "none";
@@ -904,10 +689,12 @@ async function baixarMusica(){
 
         errorText.innerText =
         "Erro ao converter vídeo.";
+    }
 
-    }finally{
+    finally{
 
-        btn.disabled = false;
+        btn.disabled =
+        false;
     }
 }
 
