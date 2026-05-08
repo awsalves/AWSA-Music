@@ -1,601 +1,219 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>AWSA Music</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/npm/browser-id3-writer/dist/browser-id3-writer.min.js"></script>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-
-    font-family:'Poppins',sans-serif;
-
-    background:
-    radial-gradient(circle at top left,#ff004c 0%,transparent 25%),
-    radial-gradient(circle at bottom right,#ff6600 0%,transparent 25%),
-    #0f0f0f;
-
-    min-height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:20px;
-
-    color:white;
-}
-
-.container{
-
-    width:100%;
-    max-width:520px;
-
-    background:rgba(18,18,18,0.95);
-
-    border-radius:30px;
-
-    padding:30px;
-
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,0.05);
-
-    box-shadow:
-    0 0 60px rgba(255,0,76,0.18),
-    0 25px 50px rgba(0,0,0,0.6);
-}
-
-.logo{
-
-    text-align:center;
-
-    margin-bottom:28px;
-}
-
-.logo h1{
-
-    font-size:2.2rem;
-
-    font-weight:700;
-
-    background:
-    linear-gradient(90deg,#ff004c,#ff6600);
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.logo p{
-
-    margin-top:8px;
-
-    color:#999;
-
-    font-size:14px;
-}
-
-input{
-
-    width:100%;
-
-    padding:17px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:#1d1d1d;
-
-    color:white;
-
-    outline:none;
-
-    margin-bottom:18px;
-}
-
-input:focus{
-
-    border:1px solid #ff004c;
-
-    box-shadow:
-    0 0 20px rgba(255,0,76,0.25);
-}
-
-button{
-
-    width:100%;
-
-    padding:16px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:
-    linear-gradient(90deg,#ff004c,#ff6600);
-
-    color:white;
-
-    font-size:16px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:0.3s;
-}
-
-button:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:
-    0 10px 25px rgba(255,0,76,0.35);
-}
-
-.loader{
-
-    width:34px;
-    height:34px;
-
-    border:3px solid rgba(255,255,255,0.15);
-
-    border-top:3px solid white;
-
-    border-radius:50%;
-
-    animation:spin 1s linear infinite;
-
-    margin:25px auto;
-
-    display:none;
-}
-
-@keyframes spin{
-    100%{
-        transform:rotate(360deg);
-    }
-}
-
-.error{
-
-    text-align:center;
-
-    margin-top:15px;
-
-    color:#ff8080;
-}
-
-.result{
-
-    margin-top:25px;
-
-    display:none;
-
-    animation:fade 0.4s ease;
-}
-
-@keyframes fade{
-
-    from{
-        opacity:0;
-        transform:translateY(15px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.card{
-
-    background:#171717;
-
-    border-radius:25px;
-
-    overflow:hidden;
-}
-
-.cover{
-
-    width:100%;
-
-    height:280px;
-
-    object-fit:cover;
-}
-
-.info{
-
-    padding:22px;
-}
-
-.title{
-
-    font-size:20px;
-
-    font-weight:600;
-
-    margin-bottom:8px;
-}
-
-.artist{
-
-    color:#999;
-
-    margin-bottom:18px;
-}
-
-.download-btn{
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    width:100%;
-
-    padding:15px;
-
-    border-radius:18px;
-
-    text-decoration:none;
-
-    background:
-    linear-gradient(90deg,#00c853,#00a843);
-
-    color:white;
-
-    font-weight:600;
-}
-
-footer{
-
-    margin-top:25px;
-
-    text-align:center;
-
-    font-size:12px;
-
-    color:#666;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWSA Music - RapidAPI Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/browser-id3-writer@4.4.0/dist/browser-id3-writer.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top left,#ff004c 0%,transparent 25%),
+                        radial-gradient(circle at bottom right,#ff6600 0%,transparent 25%), #0f0f0f;
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px; color: white;
+        }
+        .container {
+            width: 100%; max-width: 500px;
+            background: rgba(20, 20, 20, 0.95); border-radius: 30px;
+            padding: 30px; border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 50px rgba(255, 0, 76, 0.18), 0 25px 50px rgba(0,0,0,0.6);
+        }
+        .logo { text-align: center; margin-bottom: 25px; }
+        .logo h1 {
+            font-size: 2.2rem; font-weight: 700;
+            background: linear-gradient(90deg,#ff004c,#ff6600);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        input {
+            width: 100%; padding: 18px; border: none; border-radius: 18px;
+            background: #1d1d1d; color: white; outline: none; margin-bottom: 18px;
+            border: 1px solid transparent; transition: 0.3s;
+        }
+        input:focus { border-color: #ff004c; }
+        button {
+            width: 100%; padding: 16px; border: none; border-radius: 18px;
+            background: linear-gradient(90deg,#ff004c,#ff6600);
+            color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .loader {
+            width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1);
+            border-top: 4px solid #ff004c; border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 20px auto; display: none;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .result { margin-top: 25px; display: none; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .card { background: #171717; border-radius: 25px; overflow: hidden; text-align: center; }
+        .cover { width: 100%; height: 320px; object-fit: cover; background: #222; }
+        .info { padding: 22px; }
+        .download-btn {
+            display: block; width: 100%; padding: 15px; border-radius: 18px;
+            background: linear-gradient(90deg,#00c853,#00a843);
+            text-decoration: none; color: white; font-weight: 600; margin-top: 15px;
+        }
+        .error { margin-top: 15px; color: #ff7b7b; text-align: center; font-size: 14px; }
+        #status-text { text-align: center; font-size: 12px; color: #888; margin-top: 10px; }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
-
     <div class="logo">
-
         <h1>AWSA Music</h1>
-
-        <p>
-            MP3 Downloader com capa oficial
-        </p>
-
+        <p>YouTube MP3 + Capa Oficial</p>
     </div>
 
-    <input
-        type="text"
-        id="youtubeUrl"
-        placeholder="Cole a URL do YouTube"
-    >
-
-    <button onclick="baixarMusica()">
-
-        Baixar Música
-
-    </button>
+    <input type="text" id="youtubeUrl" placeholder="Cole a URL do YouTube (ex: youtube.com/watch?v=...)">
+    <button id="btnMain" onclick="baixarMusica()">Gerar Download</button>
 
     <div class="loader" id="loader"></div>
-
+    <div id="status-text"></div>
     <div class="error" id="error"></div>
 
     <div class="result" id="result">
-
         <div class="card">
-
-            <img
-                id="cover"
-                class="cover"
-                src=""
-            >
-
+            <img id="cover" class="cover" src="">
             <div class="info">
-
-                <div
-                    class="title"
-                    id="title">
-                </div>
-
-                <div
-                    class="artist"
-                    id="artist">
-                </div>
-
-                <a
-                    id="downloadBtn"
-                    class="download-btn"
-                    href="#">
-
-                    Download MP3
-
-                </a>
-
+                <div id="title" style="font-size: 18px; font-weight: 600; margin-bottom: 5px;"></div>
+                <div id="artist" style="color: #999; margin-bottom: 10px;"></div>
+                <a id="downloadBtn" class="download-btn" href="#">Salvar Arquivo MP3</a>
             </div>
-
         </div>
-
     </div>
-
-    <footer>
-
-        Powered by AWSA Info
-
-    </footer>
-
 </div>
 
 <script>
+// Configurações da API
+const RAPID_API_KEY = "eeae405702mshb70e98cb6f54359p1649fejsnaf4b3ca1a34a";
+const RAPID_API_HOST = "youtube-to-mp315.p.rapidapi.com";
+const PROXY = "https://corsproxy.io/?";
 
-// Extrair ID do vídeo
-
-function getYoutubeId(url){
-
-    const regExp =
-    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-
-    const match =
-    url.match(regExp);
-
-    return (match && match[2].length === 11)
-    ? match[2]
-    : null;
+// Extrai o ID do vídeo (funciona com youtube.com e youtu.be)
+function extrairVideoId(url) {
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    const match = url.match(regex);
+    return match ? match[1] : null;
 }
 
-// Buscar capa no Deezer
+async function buscarCapaDeezer(titulo) {
+    try {
+        const cleanTitle = titulo.replace(/\(Official.*?\)|\[Official.*?\]|Video|Audio/gi, '').trim();
+        const searchUrl = `${PROXY}${encodeURIComponent(`https://api.deezer.com/search?q=${cleanTitle}`)}`;
+        const res = await fetch(searchUrl);
+        const data = await res.json();
 
-async function buscarDadosDeezer(musica){
-
-    try{
-
-        const proxy =
-        "https://corsproxy.io/?";
-
-        const deezerApi =
-        `https://api.deezer.com/search?q=${encodeURIComponent(musica)}`;
-
-        const response =
-        await fetch(
-            proxy + encodeURIComponent(deezerApi)
-        );
-
-        const data =
-        await response.json();
-
-        if(!data.data || !data.data.length){
-
-            return null;
+        if (data.data && data.data.length > 0) {
+            const track = data.data[0];
+            return {
+                artist: track.artist.name,
+                title: track.title,
+                cover: `https://api.deezer.com/album/${track.album.id}/image?size=xl`
+            };
         }
-
-        const track =
-        data.data[0];
-
-        const albumId =
-        track.album.id;
-
-        return{
-
-            artist:
-            track.artist.name,
-
-            cover:
-            `https://api.deezer.com/album/${albumId}/image?size=xl`
-        };
-
-    }catch(error){
-
-        console.error(error);
-
-        return null;
-    }
+    } catch (e) { console.error("Erro Deezer:", e); }
+    return null;
 }
 
-// Download
+async function baixarMusica() {
+    const inputUrl = document.getElementById("youtubeUrl").value;
+    const btn = document.getElementById("btnMain");
+    const loader = document.getElementById("loader");
+    const result = document.getElementById("result");
+    const errorDiv = document.getElementById("error");
+    const status = document.getElementById("status-text");
 
-async function baixarMusica(){
+    const videoId = extrairVideoId(inputUrl);
 
-    const url =
-    document.getElementById("youtubeUrl").value;
-
-    const loader =
-    document.getElementById("loader");
-
-    const result =
-    document.getElementById("result");
-
-    const errorDiv =
-    document.getElementById("error");
-
-    errorDiv.innerHTML = "";
-
-    result.style.display = "none";
-
-    if(!url){
-
-        errorDiv.innerHTML =
-        "Cole uma URL válida.";
-
+    if (!videoId) {
+        errorDiv.innerText = "URL do YouTube inválida.";
         return;
     }
 
-    try{
-
+    try {
+        btn.disabled = true;
+        errorDiv.innerText = "";
+        result.style.display = "none";
         loader.style.display = "block";
+        status.innerText = "Conectando ao RapidAPI...";
 
-        // ID do vídeo
+        // 1. Chamada para a RapidAPI (Usando Fetch com seus Headers)
+        const options = {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': RAPID_API_KEY,
+                'x-rapidapi-host': RAPID_API_HOST
+            }
+        };
 
-        const videoId =
-        getYoutubeId(url);
+        const apiRes = await fetch(`https://${RAPID_API_HOST}/download/${videoId}`, options);
+        const apiData = await apiRes.json();
 
-        if(!videoId){
+        // Verifique se a API retornou o link (ajustado para o formato comum de APIs da RapidAPI)
+        const mp3Url = apiData.download_url || apiData.link || apiData.url;
+        const videoTitle = apiData.title || "Música";
 
-            throw new Error(
-                "ID do vídeo inválido."
-            );
-        }
+        if (!mp3Url) throw new Error("A API não retornou um link de download.");
 
-        // API MP3
+        // 2. Busca de Metadados e Capa
+        status.innerText = "Buscando arte do álbum...";
+        const meta = await buscarCapaDeezer(videoTitle);
+        const finalArtist = meta?.artist || "Desconhecido";
+        const finalTitle = meta?.title || videoTitle;
+        const finalCover = meta?.cover || "https://picsum.photos/600/600";
 
-        const api =
-        `https://api.download-lagu-mp3.com/@api/json/mp3/${videoId}`;
+        // 3. Download binário para fusão ID3
+        status.innerText = "Baixando áudio e processando...";
+        const [audioRes, coverRes] = await Promise.all([
+            fetch(PROXY + encodeURIComponent(mp3Url)),
+            fetch(PROXY + encodeURIComponent(finalCover))
+        ]);
 
-        const response =
-        await fetch(api);
+        const audioBuffer = await audioRes.arrayBuffer();
+        const coverBuffer = await coverRes.arrayBuffer();
 
-        const data =
-        await response.json();
-
-        console.log(data);
-
-        /*
-        Exemplo esperado:
-
-        {
-            title,
-            downloadUrl
-        }
-        */
-
-        const title =
-        data.title ||
-        "Música";
-
-        const mp3Url =
-        data.downloadUrl ||
-        data.download ||
-        data.link;
-
-        if(!mp3Url){
-
-            throw new Error(
-                "Link MP3 não encontrado."
-            );
-        }
-
-        // Deezer
-
-        const deezer =
-        await buscarDadosDeezer(title);
-
-        const artist =
-        deezer?.artist ||
-        "Artista desconhecido";
-
-        const cover =
-        deezer?.cover ||
-        "https://picsum.photos/500";
-
-        // Interface
-
-        document.getElementById("title")
-        .innerText = title;
-
-        document.getElementById("artist")
-        .innerText = artist;
-
-        document.getElementById("cover")
-        .src = cover;
-
-        // Download MP3
-
-        const mp3Response =
-        await fetch(mp3Url);
-
-        const mp3Blob =
-        await mp3Response.blob();
-
-        const mp3Buffer =
-        await mp3Blob.arrayBuffer();
-
-        // Download capa
-
-        const coverResponse =
-        await fetch(cover);
-
-        const coverBlob =
-        await coverResponse.blob();
-
-        const coverBuffer =
-        await coverBlob.arrayBuffer();
-
-        // Metadata ID3
-
-        const writer =
-        new ID3Writer(mp3Buffer);
-
-        writer
-        .setFrame("TIT2", title)
-        .setFrame("TPE1", [artist])
-        .setFrame("APIC", {
-            type: 3,
-            data: coverBuffer,
-            description: "Album Cover"
-        });
-
+        // 4. Inserir Tags ID3
+        const writer = new ID3Writer(audioBuffer);
+        writer.setFrame('TIT2', finalTitle)
+              .setFrame('TPE1', [finalArtist])
+              .setFrame('APIC', {
+                  type: 3,
+                  data: coverBuffer,
+                  description: 'Capa'
+              });
         writer.addTag();
 
-        const taggedBlob =
-        writer.getBlob();
+        const finalBlob = writer.getBlob();
+        const downloadUrl = URL.createObjectURL(finalBlob);
 
-        const finalUrl =
-        URL.createObjectURL(taggedBlob);
+        // UI Update
+        document.getElementById("cover").src = finalCover;
+        document.getElementById("title").innerText = finalTitle;
+        document.getElementById("artist").innerText = finalArtist;
+        
+        const dlBtn = document.getElementById("downloadBtn");
+        dlBtn.href = downloadUrl;
+        dlBtn.download = `${finalTitle}.mp3`;
 
-        // Botão
+        loader.style.display = "none";
+        status.innerText = "";
+        result.style.display = "block";
 
-        const downloadBtn =
-        document.getElementById("downloadBtn");
-
-        downloadBtn.href =
-        finalUrl;
-
-        downloadBtn.download =
-        `${title}.mp3`;
-
-        result.style.display =
-        "block";
-
-    }catch(error){
-
-        console.error(error);
-
-        errorDiv.innerHTML =
-        error.message;
-
-    }finally{
-
-        loader.style.display =
-        "none";
+    } catch (err) {
+        console.error(err);
+        errorDiv.innerText = "Erro ao processar. Verifique sua chave da RapidAPI ou limite de uso.";
+        loader.style.display = "none";
+        status.innerText = "";
+    } finally {
+        btn.disabled = false;
     }
-
 }
-
 </script>
 
 </body>
